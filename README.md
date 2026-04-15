@@ -35,10 +35,10 @@ Note: while some things like the 40 instructions limit seem arbitary, they are g
 ### Setup
 ```bash
 # Clone the plugin
-git clone [https://github.com/dynaptik/crispy-orchestrator](https://github.com/dynaptik/crispy-orchestrator)
+git clone https://github.com/dynaptik/crispy-plugin
 
 # Install dependencies
-cd crispy-orchestrator
+cd crispy-plugin
 npm install
 
 # Build the plugin
@@ -53,8 +53,8 @@ Start the pipeline with a single command:
 /crispy "Implement rate limiting for the /v1/auth endpoint"
 ```
 ### Commands
-* `/crispy status`: View current phase and artifact completion
-* `/crispy resume`: Pick up from the last validated checkpoint
+* `/crispy-status`: View current phase and artifact completion
+* `/crispy-resume`: Pick up from the last validated checkpoint
 * `/approve-design`: Proceed to implementation after reviewing the design
 
 ## CRISPY Project Tree
