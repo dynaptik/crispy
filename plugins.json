@@ -1,7 +1,9 @@
 {
   "plugins": [
     {
-      "id": "crispy-orchestrator",
+      "id": "crispy-plugin",
+      "name": "CRISPY Orchestrator",
+      "version": "1.0.0",
       "url": "https://github.com/dynaptik/crispy-plugin"
     }
   ]
