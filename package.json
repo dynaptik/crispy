@@ -1,0 +1,6 @@
+{
+  "name": "crispy-plugin",
+  "version": "0.1.0",
+  "description": "CRISPY (how QRSPI sounds to me phonetically) is a multi-agent orchestration plugin for software development. It implements an 8-phase state machine based on the QRSPI methodology (Question, Research, Structure, Plan, Implement).",
+  "license": "MIT"
+}
