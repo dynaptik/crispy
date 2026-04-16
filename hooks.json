@@ -1,8 +1,10 @@
 {
   "hooks": {
-    "onCommand": "./dist/index.js",
-    "onSessionStart": "./dist/index.js:onSessionStart",
-    "preAction": "./dist/hooks/pre-phase.js",
-    "postAction": "./dist/hooks/post-phase.js"
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "mkdir -p .crispy"
+      }
+    ]
   }
 }

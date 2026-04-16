@@ -20,75 +20,85 @@ Note: while some things like the 40 instructions limit seem arbitary, they are g
 3. **Design:** Architectural alignment; outputs `04_design.md` (Human Gate)
 4. **Structure:** Map vertical implementation slices; outputs `05_structure.md`
 5. **Plan:** Tactical task list and checkboxes; outputs `06_plan.md`
-6. **Worktree:** Isolated git environment creation via MCP for clean execution
+6. **Worktree:** Isolated git environment for clean execution (recommended, not automated)
 7. **Implement:** Execute slices one-by-one, flushing context after each slice
 8. **PR:** Assemble the final pull request with a full audit trail
 
 ## Installation & Setup
 
 ### Requirements
-* **VS Code Copilot Agent Plugin:** Preview feature, `chat.plugins.enabled` required
-* **MCP**: Model Context Protocol enabled environment
-* **Git (2.40+):** Required for `git worktree` isolation
-* **WSL2 / Linux / macOS:** Recommended for optimal MCP file-system performance
+* **VS Code** with GitHub Copilot Chat — agent plugins are a preview feature, enable with `chat.plugins.enabled`
+* Alternatively: **GitHub Copilot CLI** (full plugin support)
 
 ### Setup
+
+No build step required. The plugin is pure markdown and JSON.
+
 ```bash
-# Clone the plugin
+# Option A: Install from source via VS Code Command Palette
+# Run "Chat: Install Plugin From Source" and enter:
+https://github.com/dynaptik/crispy-plugin
+
+# Option B: Clone locally and register via settings
 git clone https://github.com/dynaptik/crispy-plugin
+```
 
-# Install dependencies
-cd crispy-plugin
-npm install
-
-# Build the plugin
-npm run build
+If cloned locally, add it to your VS Code settings:
+```jsonc
+// settings.json
+"chat.pluginLocations": {
+    "/path/to/crispy-plugin": true
+}
 ```
 
 ## Usage
 
-Start the pipeline with a single command:
+Start the pipeline with the `/crispy-start` skill:
 
-```bash
-/crispy "Implement rate limiting for the /v1/auth endpoint"
 ```
-### Commands
+/crispy-start "Implement rate limiting for the /v1/auth endpoint"
+```
+
+### Skills
+* `/crispy-start`: Begin the QRSPI pipeline with a feature description
+* `/crispy-approve`: Approve the design and proceed to structuring, planning, and implementation
 * `/crispy-status`: View current phase and artifact completion
 * `/crispy-resume`: Pick up from the last validated checkpoint
-* `/approve-design`: Proceed to implementation after reviewing the design
+
+### Agents
+
+The plugin provides 6 specialized agents that form the handoff chain:
+
+**Questioner** → **Researcher** → **Architect** → *(human gate: `/crispy-approve`)* → **Structurer** → **Planner** → **Builder**
+
+Each agent has restricted tool access and a scoped instruction budget. The Researcher is explicitly forbidden from reading `01_task.md` (context firewall). The Builder exits after one slice (context flushing).
 
 ## CRISPY Project Tree
 
 ### `crispy/` artifacts
 This folder is the Memory of the project. By naming files 01_ through 07_, we ensure that any developer (or a resumed AI agent) can see the logical progression. If the AI hallucinates during implementation, you can point it back to 04_design.md as the ground truth.
 
-### `.crispy-worktree/`
-This is the Execution Sandbox. Because your WSL2 Git (2.43.0) supports git worktree, the orchestrator creates this folder to run tests. This is the "Context Firewall" at the file-system level; the agent cannot see your uncommitted local files, ensuring it only builds based on what is in the repository and the artifacts.
+### `.crispy-worktree/` (optional)
+If you use `git worktree` for slice isolation, this is where worktrees live. The plugin recommends but does not automate worktree creation — you or your CI can set this up. The isolation keeps the agent focused on repository state rather than uncommitted local changes.
 
 ### `src/features/` directory
 This reflects the Vertical Slice Architecture:
 * **Traditional:** You'd have src/controller/authConntroller.ts and src/middleware/rateLimiter.ts
 * **Make it CRISPY:** Everything related to the "rate-limiting" feature is co-located. This makes it easier for the AI to "research" the feature later because the context is concentrated in one folder rather than scattered across the whole tree
 
-### `state.json`
-This file is what makes the `/crispy resume` command possible. It maps which artifacts have been validated by a human. If you stop at Phase 3 (Design), the `state.json` ensures the agent doesn't try to start implementation without your `/approve-design` command.
+### Phase ordering
+The handoff chain between agents enforces phase ordering declaratively. Each agent hands off to the next with `send: false`, meaning the user must explicitly trigger the transition. The human gate after Phase 3 (Design) is enforced by the `/crispy-approve` skill — without it, the Structurer is never invoked.
 
 ```
 my-project/
 ├── .crispy/                        # CRISPY ARTIFACTS (State & Context)
-│   └── task-2026-04-15/            # unique folder per feature/task
-│       ├── state.json              # phase progress (1-8) tracker
-│       ├── 01_task.md              # raw user intent (this is your nucleus!)
-│       ├── 02_questions.md         # socratic inquiries (The "Q" Phase)
-│       ├── 03_research.md          # blind codebase facts (The "R" Phase)
-│       ├── 04_design.md            # approved architecture (The "Brain Surgery")
-│       ├── 05_structure.md         # vertical slice definitions (Checkpoints)
-│       ├── 06_plan.md              # tactical task-by-task execution list
-│       └── 07_implementation.log   # verification results for each slice
-│
-├── .crispy-worktree/               # ISOLATED EXECUTION (Phase 6-7)
-│   └── implementation-sandbox/     # physical Git Worktree (Clean Room)
-│       └── [Checked out code]      # where the agent actually writes code
+│   ├── 01_task.md                  # raw user intent (this is your nucleus!)
+│   ├── 02_questions.md             # socratic inquiries (The "Q" Phase)
+│   ├── 03_research.md              # blind codebase facts (The "R" Phase)
+│   ├── 04_design.md                # approved architecture (The "Brain Surgery")
+│   ├── 05_structure.md             # vertical slice definitions (Checkpoints)
+│   ├── 06_plan.md                  # tactical task-by-task execution list
+│   └── 07_implementation.log       # verification results for each slice
 │
 ├── src/                            # PROJECT SOURCE (Vertical Slice Style)
 │   └── features/                   # core business logic grouping
@@ -99,8 +109,7 @@ my-project/
 │           └── __tests__/          # integrated slice tests
 │               └── rate-limit.test.ts
 │
-├── .gitignore                      # includes .crispy-worktree/ and state.json
-└── package.json
+└── .gitignore
 ```
 
 ## The opinionated parts
