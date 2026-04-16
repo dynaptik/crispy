@@ -1,5 +1,5 @@
 {
-  "name": "crispy-orchestrator",
+  "name": "crispy",
   "description": "CRISPY (QRSPI) multi-agent orchestration plugin — 8-phase state machine with context firewalls, vertical slice enforcement, and instruction budgeting for reliable agentic coding.",
   "version": "0.1.0",
   "author": {
@@ -17,6 +17,5 @@
     "state-machine"
   ],
   "agents": "agents/",
-  "skills": "skills/",
-  "hooks": "hooks.json"
+  "skills": "skills/"
 }
