@@ -10,11 +10,15 @@ Initiates the CRISPY Orchestrator. This command sets up the project structure, a
 
 ## What happens
 
-1. Creates the `.crispy/` artifact directory for this task
-2. Saves your intent to `01_task.md`
-3. Invokes the **Questioner** agent to decompose your intent into 5-10 targeted technical questions
-4. Proceeds through Research (with context firewall — Researcher cannot see your intent) and Design
-5. Stops at the **human gate** — you must review `04_design.md` and run `/crispy-approve` to continue
+1. Create the file `.crispy/01_task.md` with the user's intent (this implicitly creates the directory)
+2. Hand off to the **CRISPY Questioner** subagent to decompose the intent into 5-10 targeted technical questions
+3. The handoff chain continues through Research and Design automatically
+4. Stops at the **human gate** — the user must review `04_design.md` and run `/crispy:resume` to continue
+
+## Important
+
+- Do NOT read the plugin's own `agents/` or `skills/` directories. Subagents are invoked by name — VS Code loads their instructions automatically.
+- Do NOT verify or list the `.crispy/` directory after creating files in it.
 
 ## Usage
 

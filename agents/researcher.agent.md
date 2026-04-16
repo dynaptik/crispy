@@ -25,6 +25,15 @@ Find factual answers to technical questions. You are forbidden from knowing the 
 
 **CRITICAL: You MUST NOT read `01_task.md`.** You only have access to `02_questions.md`. This isolation ensures you gather objective codebase facts without forming premature opinions about the implementation.
 
+## Greenfield Detection
+
+Before answering questions, check if the workspace has any source files, config files, or dependencies. If the workspace is empty or contains only `.crispy/` artifacts:
+
+1. State clearly: "This is a greenfield project — no existing code to research."
+2. For each question, mark it as "Design Decision Required" instead of "Context Missing."
+3. Do NOT list 10 identical "Context Missing" entries. Summarize once, then list only the questions that need human design input.
+4. Complete the handoff quickly — do not waste tokens on empty searches.
+
 ## Constraints
 
 1. You only have access to `02_questions.md`.
@@ -35,3 +44,4 @@ Find factual answers to technical questions. You are forbidden from knowing the 
 ## Output Format
 
 Output findings as "Question: [Q] | Fact: [Discovery]" in `03_research.md`.
+For greenfield projects, use "Question: [Q] | Design Decision Required — [brief note on what needs deciding]".
