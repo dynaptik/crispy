@@ -10,10 +10,9 @@ Initiates the CRISPY Orchestrator. This command sets up the project structure, a
 
 ## What happens
 
-1. Clean up previous run state:
-   - If `.crispy-worktree/` exists, remove it: `git worktree remove .crispy-worktree --force` (ignore errors)
-   - If branch `crispy/implementation` exists, delete it: `git branch -D crispy/implementation` (ignore errors)
-   - Delete all files in `.crispy/` (the directory itself can stay)
+1. Clean up previous run state using `execute`:
+   - `git worktree remove .crispy-worktree --force 2>/dev/null; git branch -D crispy/implementation 2>/dev/null; rm -f .crispy/*.md .crispy/*.log`
+   - This is a single command. Errors from missing worktrees/branches/files are suppressed.
 2. Create the file `.crispy/01_task.md` with the user's intent
 3. Hand off to the **CRISPY Questioner** subagent to decompose the intent into 5-10 targeted technical questions
 4. The handoff chain continues through Research and Design automatically
