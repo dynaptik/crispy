@@ -8,10 +8,10 @@ Note: while some things like the 40 instructions limit seem arbitary, they are g
 
 ## Core Principles
 
-* **Context Firewalls:** Sub-agents are isolated. The Researcher is physically blinded from the feature task to ensure objective findings
-* **Vertical Slices:** Development is broken into independent, testable slices (Logic + API + Tests) rather than horizontal architectural layers
-* **Instruction Budgeting:** Each agent operates with fewer than 40 instructions to maintain high reasoning quality
-* **Automated Context Flushing:** The orchestrator restarts the implementation agent between every vertical slice to prevent the 'plan-reading illusion.
+* **Context Firewalls:** Sub-agents are isolated by instruction boundaries. The Researcher is forbidden from reading `01_task.md` via prompt-level enforcement — it only sees `02_questions.md`. This is a logical firewall (the model respects the instruction), not a tool-level restriction.
+* **Vertical Slices:** Development is broken into independent, testable slices (Logic + API + Tests) rather than horizontal architectural layers.
+* **Instruction Budgeting:** Each agent is authored with fewer than 40 instructions (self-documented via `Budget: N/40` annotations). This is an authoring discipline to stay below empirical drift thresholds, not a runtime enforcement mechanism.
+* **Enforced Context Flushing:** The Builder agent has no outbound handoffs and is instructed to exit after each slice. The user triggers the next slice via `/crispy:resume`, which reinvokes the Builder with a clean context window. This is manual-trigger flushing, not an automated loop.
 
 ## The 8 Phases
 
