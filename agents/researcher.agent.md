@@ -6,6 +6,7 @@ tools:
   - search
   - read
   - web/fetch
+  - edit/createFile
 handoffs:
   - label: "Start Design"
     agent: CRISPY Architect
