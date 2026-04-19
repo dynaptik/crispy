@@ -52,17 +52,26 @@ After completing and verifying a slice, you MUST append to `.crispy/07_implement
 
 This is NOT optional. The orchestrator checks for this file to determine slice completion.
 
+## Commit After Every Slice
+
+After writing the implementation log, commit the slice's work using `execute`:
+
+```
+git add -A && git commit -m "slice N: <slice name>"
+```
+
+This applies whether working in a worktree or on the main branch. Each slice gets its own commit. Do NOT leave uncommitted changes — the next Builder invocation starts with a clean context and must not deal with dirty state.
+
 ## Context Flushing
 
 **CRITICAL: After completing one slice, you MUST stop.** The orchestrator will restart you with clean context for the next slice. This prevents the plan-reading illusion and context window degradation.
 
 ## Final Slice — Wrap Up
 
-After logging a slice to `07_implementation.log`, check if this was the **last slice** by comparing the slice number to the total in `06_plan.md`. If all slices are complete:
+After committing the last slice, check if this was the **last slice** by comparing the slice number to the total in `06_plan.md`. If all slices are complete:
 
 1. Run the full test suite using `execute` to confirm everything passes together.
-2. Commit all changes: `git add -A && git commit -m "feat: <feature summary from 01_task.md>"` (use `execute`).
-3. If working in a worktree (`.crispy-worktree/`):
+2. If working in a worktree (`.crispy-worktree/`):
    - `cd` back to the main project root
    - Merge the branch: `git merge crispy/implementation`
    - Clean up: `git worktree remove .crispy-worktree --force && git branch -D crispy/implementation`
