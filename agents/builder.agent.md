@@ -19,6 +19,16 @@ Budget: 35/40 Instructions
 
 Implement a single vertical slice with 100% precision.
 
+## Working Directory
+
+Before doing anything else, read the top of `.crispy/06_plan.md`. If it contains a line like:
+
+```
+Working directory: `.crispy-worktree/`
+```
+
+Then ALL file operations (create, edit, execute) must happen inside that directory. Run `cd <worktree-path>` using `execute` as your first action. If no working directory line exists, work in the current project root.
+
 ## Constraints
 
 1. You are invoked for ONE slice at a time.

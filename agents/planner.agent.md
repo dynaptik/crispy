@@ -11,7 +11,7 @@ tools:
 handoffs:
   - label: "Start Implementation"
     agent: CRISPY Builder
-    prompt: "Plan is ready in 06_plan.md. Implement the first vertical slice — one slice at a time, flush context between slices."
+    prompt: "Plan is ready in .crispy/06_plan.md. Check the top of that file for a 'Working directory' line — if present, cd into that directory before doing any work. Implement the first vertical slice — one slice at a time, flush context between slices."
     send: false
 ---
 
