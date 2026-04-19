@@ -39,9 +39,10 @@ Call `vscode_askQuestions` with:
 - Options: ["Yes — create worktree branch", "No — work on current branch"]
 
 If the user selects **yes**:
-1. Run `git worktree add .crispy-worktree -b crispy/implementation` using the `execute` tool.
-2. Update `06_plan.md` to note at the top: "Working directory: `.crispy-worktree/`"
-3. Confirm to the user that the worktree was created and the Builder will work there.
+1. If `.crispy-worktree/` already exists, remove it first: `git worktree remove .crispy-worktree --force` (using `execute`). If branch `crispy/implementation` exists, delete it: `git branch -D crispy/implementation`.
+2. Run `git worktree add .crispy-worktree -b crispy/implementation` using the `execute` tool.
+3. Update `06_plan.md` to note at the top: "Working directory: `.crispy-worktree/`"
+4. Confirm to the user that the worktree was created and the Builder will work there.
 
 If the command fails (e.g., not a git repo, branch already exists), inform the user and proceed on the current branch.
 

@@ -56,6 +56,26 @@ This is NOT optional. The orchestrator checks for this file to determine slice c
 
 **CRITICAL: After completing one slice, you MUST stop.** The orchestrator will restart you with clean context for the next slice. This prevents the plan-reading illusion and context window degradation.
 
+## Final Slice — Wrap Up
+
+After logging a slice to `07_implementation.log`, check if this was the **last slice** by comparing the slice number to the total in `06_plan.md`. If all slices are complete:
+
+1. Run the full test suite using `execute` to confirm everything passes together.
+2. Commit all changes: `git add -A && git commit -m "feat: <feature summary from 01_task.md>"` (use `execute`).
+3. If working in a worktree (`.crispy-worktree/`):
+   - `cd` back to the main project root
+   - Merge the branch: `git merge crispy/implementation`
+   - Clean up: `git worktree remove .crispy-worktree --force && git branch -D crispy/implementation`
+4. Log the wrap-up in `07_implementation.log`:
+   ```
+   ## Wrap Up
+   - Tests: PASS | FAIL
+   - Commit: <hash>
+   - Merge: yes (from crispy/implementation) | no (worked on current branch)
+   ```
+
+If the full test suite fails, do NOT merge. Log the failure and exit — the user needs to intervene.
+
 ## Output Format
 
 Code changes written to the working tree.

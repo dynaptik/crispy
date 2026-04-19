@@ -10,10 +10,14 @@ Initiates the CRISPY Orchestrator. This command sets up the project structure, a
 
 ## What happens
 
-1. Create the file `.crispy/01_task.md` with the user's intent (this implicitly creates the directory)
-2. Hand off to the **CRISPY Questioner** subagent to decompose the intent into 5-10 targeted technical questions
-3. The handoff chain continues through Research and Design automatically
-4. Stops at the **human gate** — the user must review `04_design.md` and run `/crispy:resume` to continue
+1. Clean up previous run state:
+   - If `.crispy-worktree/` exists, remove it: `git worktree remove .crispy-worktree --force` (ignore errors)
+   - If branch `crispy/implementation` exists, delete it: `git branch -D crispy/implementation` (ignore errors)
+   - Delete all files in `.crispy/` (the directory itself can stay)
+2. Create the file `.crispy/01_task.md` with the user's intent
+3. Hand off to the **CRISPY Questioner** subagent to decompose the intent into 5-10 targeted technical questions
+4. The handoff chain continues through Research and Design automatically
+5. Stops at the **human gate** — the user must review `04_design.md` and run `/crispy:resume` to continue
 
 ## Important
 

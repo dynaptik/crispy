@@ -76,11 +76,13 @@ When the Architect finishes, a clickable **"Approve Design"** button appears in 
 
 ## CRISPY Project Tree
 
-### `crispy/` artifacts
-This folder is the Memory of the project. By naming files 01_ through 07_, we ensure that any developer (or a resumed AI agent) can see the logical progression. If the AI hallucinates during implementation, you can point it back to 04_design.md as the ground truth.
+### `.crispy/` working state
+This folder is ephemeral scratch space for the current pipeline run. Each `/crispy:start` overwrites the previous artifacts. By naming files 01_ through 07_, any developer (or a resumed AI agent) can see the logical progression of the *current* feature. If the AI hallucinates during implementation, you can point it back to 04_design.md as the ground truth.
+
+Once the feature is implemented and merged, these files have served their purpose — the decision history is preserved in your git log. If you want to keep them, commit before starting a new run.
 
 ### `.crispy-worktree/` (optional)
-If you use `git worktree` for slice isolation, this is where worktrees live. The plugin recommends but does not automate worktree creation — you or your CI can set this up. The isolation keeps the agent focused on repository state rather than uncommitted local changes.
+When the Planner asks about git worktree and you accept, it creates `.crispy-worktree/` as an isolated checkout. On a new `/crispy:start` run, any existing worktree is cleaned up automatically. The Builder works inside the worktree to keep the main branch clean during implementation.
 
 ### `src/features/` directory
 This reflects the Vertical Slice Architecture:
