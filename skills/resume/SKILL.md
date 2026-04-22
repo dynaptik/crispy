@@ -1,11 +1,11 @@
 ---
 name: resume
-description: "Resume CRISPY from the last validated checkpoint. Use when a session was interrupted, when switching workstations, or to manually approve the design and continue past the human gate."
+description: "Resume CRISPY from the last validated checkpoint. Use when a session was interrupted, when switching workstations, or when the design was approved and you want to continue the workflow."
 ---
 
 # CRISPY Resume
 
-Use this if the session was interrupted, you are switching workstations, or the handoff button from the previous phase is no longer visible (e.g., chat was closed after the Architect finished).
+Use this if the session was interrupted, you are switching workstations, or the design was approved and you want to continue from the current checkpoint.
 
 ## What it does
 

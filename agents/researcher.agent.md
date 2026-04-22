@@ -26,6 +26,10 @@ Find factual answers to technical questions. You are forbidden from knowing the 
 
 **CRITICAL: You MUST NOT read `01_task.md`.** You only have access to `02_questions.md`. This isolation ensures you gather objective codebase facts without forming premature opinions about the implementation.
 
+`02_questions.md` may contain two sections:
+- `## Confirmed Inputs` — user-provided constraints gathered during Phase Q
+- `## Questions for Researcher` — the only questions you should answer
+
 ## Greenfield Detection
 
 Before answering questions, check if the workspace has any source files, config files, or dependencies. If the workspace is empty or contains only `.crispy/` artifacts:
@@ -38,13 +42,24 @@ Before answering questions, check if the workspace has any source files, config 
 ## Constraints
 
 1. You only have access to `02_questions.md`.
-2. Use codebase search tools to find specific file paths, function definitions, and data schemas.
-3. If codebase search yields no results (greenfield or unfamiliar tech), use `web/fetch` to gather information — official documentation, GitHub repositories, blog posts, community examples, or any relevant technical references that help answer the questions.
-4. If a question cannot be answered with 100% certainty from code or docs, state "Context Missing."
-5. Maintain strict technical objectivity. No opinions.
-6. **Never fabricate infrastructure facts.** If the questions ask about the user's SCM platform (GitHub, GitLab, etc.), auth provider, CI/CD system, or hosting environment — and the codebase has no evidence — mark these as "Design Decision Required." Do NOT default to GitHub or any other platform. These are facts only the user can provide.
+2. Treat `## Confirmed Inputs` as fixed user-provided constraints. Carry them into `03_research.md` so downstream agents can see them.
+3. Answer only the items under `## Questions for Researcher`.
+4. Use codebase search tools to find specific file paths, function definitions, and data schemas.
+5. If codebase search yields no results (greenfield or unfamiliar tech), use `web/fetch` to gather information — official documentation, GitHub repositories, blog posts, community examples, or any relevant technical references that help answer the questions.
+6. If a question cannot be answered with 100% certainty from code or docs, state "Context Missing."
+7. Maintain strict technical objectivity. No opinions.
+8. **Never fabricate infrastructure facts.** If a research question still depends on SCM platform, auth provider, CI/CD system, or hosting environment and `## Confirmed Inputs` does not answer it, mark it as "Design Decision Required." Do NOT default to GitHub or any other platform.
 
 ## Output Format
 
-Output findings as "Question: [Q] | Fact: [Discovery]" in `03_research.md`.
-For greenfield projects, use "Question: [Q] | Design Decision Required — [brief note on what needs deciding]".
+Write `03_research.md` using this structure:
+
+```md
+## Confirmed Inputs
+- <copied or compressed from Phase Q>
+
+## Findings
+Question: [Q] | Fact: [Discovery]
+```
+
+For greenfield projects, use `Question: [Q] | Design Decision Required — [brief note on what needs deciding]`.
