@@ -1,6 +1,6 @@
 <!-- LOGO -->
 <h1 align="center">
-    <img src="" alt="CRISPY logo" width="512">
+    <img src="https://github.com/user-attachments/assets/45ed2618-e450-4c49-b281-a79edacd8876" alt="CRISPY logo" width="512">
     <br />
     CRISPY Orchestrator
 </h1>
